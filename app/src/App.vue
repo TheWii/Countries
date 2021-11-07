@@ -19,14 +19,14 @@ import DetailContainer from './components/details/DetailContainer.vue';
 
 export default {
   name: 'App',
-  data() { return {
-    theme: 'light'
-  }},
   components: {
     Header,
     HomeContainer,
     DetailContainer
   },
+  data() { return {
+    theme: 'light'
+  }},
   methods: {
     setTheme(name) {
       document.documentElement.className = name;
