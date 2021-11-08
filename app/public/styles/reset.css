@@ -30,3 +30,7 @@ input::placeholder {
 ul {
     list-style: none;
 }
+
+img {
+    display: block;
+}

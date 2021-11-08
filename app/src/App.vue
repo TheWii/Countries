@@ -70,7 +70,7 @@ body {
 }
 
 main {
-  padding: 20rem 60rem;
+  padding: 40rem 60rem;
 }
 
 </style>

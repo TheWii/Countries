@@ -40,7 +40,9 @@ export default {
     display: flex;
     align-items: center;
     gap: 16rem;
-    padding: 8rem 24rem;
+    width: 100%;
+    max-width: 400rem;
+    padding: 5rem 24rem;
     border-radius: 4rem;
     background: var(--element-color);
     box-shadow: 2rem 2rem 10rem rgba(0, 0, 0, 0.05);

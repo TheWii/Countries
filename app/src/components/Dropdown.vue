@@ -50,7 +50,7 @@ export default {
     display: flex;
     align-items: center;
     gap: 45rem;
-    padding: 18rem 25rem;
+    padding: 15rem 25rem;
     border-radius: 4rem;
     background: var(--element-color);
     box-shadow: 2rem 2rem 10rem rgba(0, 0, 0, 0.05);

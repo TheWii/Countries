@@ -35,7 +35,7 @@ export default {
             console.log(`Filtering for ${region}.`);
         },
         search(query) {
-            console.log(`Searching for '${query}'`);
+            this.$emit('search', query);
         }
     }
 }
@@ -49,6 +49,10 @@ export default {
     display: flex;
     justify-content: space-between;
     gap: 10rem;
+}
+
+.dropdown {
+    flex-shrink: 0;
 }
 
 </style>
