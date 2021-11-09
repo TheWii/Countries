@@ -1,23 +1,24 @@
 <template>
-<button class="dropdown"
+<div class="dropdown"
   :class = "{ active }"
-  @click="clicked"
 >
-    <span>{{ text }}</span>
-    <img class="expand-icon" src="../assets/expand-arrow.svg" alt="Expand icon">
+    <button @click="clicked">
+        <span>{{ getText }}</span>
+        <img class="expand-icon" src="../assets/expand-arrow.svg" alt="Expand icon">
+    </button>
     <ul class="content">
         <li
           v-for="item in items"
           :key="item"
         >
             <button
-              @click="select(item)"
+              @click="clickedItem(item)"
             >
                 {{ item }}
             </button>
         </li>
     </ul>
-</button>
+</div>
 </template>
 
 
@@ -29,14 +30,42 @@ export default {
         active: false,
         selected: null
     }},
+    computed: {
+        getText() {
+            return this.selected ? this.selected : this.text;
+        }
+    },
     methods: {
-        clicked() {
-            this.active = !this.active;
-            this.$emit(this.active ? 'opened' : 'closed');
+        open() {
+            this.active = true;
+            this.$emit('opened');
         },
+        close() {
+            this.active = false;
+            this.$emit('closed');
+        },
+        switch() {
+            if (this.active) this.close();
+            else this.open();
+        },
+
+        clicked() {
+            this.switch();
+        },
+        clickedItem(item) {
+            if (this.selected === item) this.deselect();
+            else this.select(item);
+        },
+
         select(item) {
             this.selected = item;
             this.$emit('selected', item);
+            this.close();
+        },
+        deselect() {
+            this.$emit('deselected', this.selected);
+            this.selected = null;
+            this.close();
         }
     }
 }
@@ -47,15 +76,21 @@ export default {
 
 .dropdown {
     position: relative;
+    width: 100%;
+    max-width: 200rem;
+}
+.dropdown > button {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 45rem;
+    width: 100%;
     padding: 15rem 25rem;
     border-radius: 4rem;
     background: var(--element-color);
     box-shadow: 2rem 2rem 10rem rgba(0, 0, 0, 0.05);
 }
 .expand-icon {
+    display: inline;
     width: 0.65em;
     filter: invert(var(--invert-percent));
 }

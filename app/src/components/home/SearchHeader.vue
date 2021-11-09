@@ -8,6 +8,7 @@
       :text="'Filter by Region'"
       :items="continents"
       @selected="filterRegion"
+      @deselected="filterRegion(null)"
     ></Dropdown>
 </div>
 </template>
@@ -25,14 +26,16 @@ export default {
     },
     props: [ ],
     data() { return {
+        filteredRegion: null,
         continents: [
-            'Africa', 'America', 'Asia',
+            'Africa', 'Americas', 'Asia',
             'Europe', 'Oceania'
         ]
     }},
     methods: {
         filterRegion(region) {
-            console.log(`Filtering for ${region}.`);
+            this.filteredRegion = region;
+            this.$emit('filter-region', region);
         },
         search(query) {
             this.$emit('search', query);
