@@ -1,5 +1,81 @@
 <template>
-<div class="detail-container">
+<div class="detail container"
+  :class="{ active }"
+>
+    <button class="back"
+      @click="$emit('open-container', 'home')"
+    >
+        <img src="../../assets/arrow-left.svg" alt="Arrow pointing to the left.">
+        <span>Back</span>
+    </button>
+
+    <div class="content" v-if="active">
+        <div>
+            <img class="flag"
+            :src="getFlag"
+            alt="Country flag."
+            >
+        </div>
+
+        <div class="info">
+            <h1 class="name">{{ getName }}</h1>
+
+            <div class="columns">
+                <div>
+                    <div class="field" v-if="getNativeName">
+                        <span class="label">Native Name: </span>
+                        <span class="value">{{ getNativeName }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Population: </span>
+                        <span class="value">{{ getPopulation }}</span>
+                    </div>
+                    <div class="field">
+                        <span class="label">Region: </span>
+                        <span class="value">{{ getRegion }}</span>
+                    </div>
+                    <div class="field" v-if="getSubRegion">
+                        <span class="label">Sub Region: </span>
+                        <span class="value">{{ getSubRegion }}</span>
+                    </div>
+                    <div class="field" v-if="getCapital">
+                        <span class="label">Capital: </span>
+                        <span class="value">{{ getCapital }}</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="field" v-if="getTopLevelDomain">
+                        <span class="label">Top Level Domain: </span>
+                        <span class="value">{{ getTopLevelDomain }}</span>
+                    </div>
+                    <div class="field" v-if="getCurrencies">
+                        <span class="label">Currencies: </span>
+                        <span class="value">{{ getCurrencies }}</span>
+                    </div>
+                    <div class="field" v-if="getLanguages">
+                        <span class="label">Languages: </span>
+                        <span class="value">{{ getLanguages }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field borders">
+                <span class="label">Border Countries: </span>
+                <span class="value"
+                  v-for="country in getBorders"
+                  :key="country"
+                >
+                    {{ country }}
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="content" v-else>
+        Nothing to show.
+    </div>
+
 </div>
 </template>
 
@@ -7,7 +83,59 @@
 <script>
 export default {
     name: 'DetailContainer',
-    props: [ ],
+    props: [ 'activeContainer', 'data' ],
+    data() { return {
+        id: 'details',
+    }},
+    watch: {
+        data() {
+            console.log(`DetailContainer -> Changed data.`);
+        }
+    },
+    computed: {
+        active() {
+            return this.id === this.activeContainer;
+        },
+        getFlag() {
+            return this.data.flags.svg;
+        },
+        getName() {
+            return this.data.name.common;
+        },
+        getNativeName() {
+            for (let entry of Object.entries(this.data.name.nativeName)) {
+                return entry[1].common;
+            }
+            return '';
+        },
+        getPopulation() {
+            return this.data.population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        getRegion() {
+            return this.data.region;
+        },
+        getSubRegion() {
+            return this.data.subregion;
+        },
+        getCapital() {
+            return this.data.capital ? this.data.capital[0] : '';
+        },
+        getTopLevelDomain() {
+            return this.data.tld ? this.data.tld[0] : '';
+        },
+        getCurrencies() {
+            if (!this.data.currencies) return '';
+            return Object.values(this.data.currencies)
+                .reduce((acc, val) => (acc + val.name), '');
+        },
+        getLanguages() {
+            if (!this.data.languages) return '';
+            return Object.values(this.data.languages).join(', ');
+        },
+        getBorders() {
+            return this.data.borders;
+        }
+    },
     methods: {
     }
 }
@@ -15,5 +143,123 @@ export default {
 
 
 <style scoped>
+
+button {
+    display: flex;
+    align-items: center;
+    gap: 10rem;
+    padding: 8rem 30rem;
+    border-radius: 4rem;
+    background: var(--element-color);
+    box-shadow: 0rem 0rem 6rem rgba(0, 0, 0, 0.1);
+}
+
+button.back > img {
+    display: inline;
+    filter: invert(var(--invert-percent));
+}
+
+.container {
+    display: none;
+    /*animation-name: hide;
+    animation-duration: 1s;*/
+}
+.container.active {
+    display: block;
+    /*animation-name: show;*/
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200rem;
+    gap: 50rem;
+    padding-top: 60rem;
+}
+
+.flag {
+    display: inline;
+    width: 100%;
+    max-width: 550rem;
+    object-fit:cover;
+}
+
+.info {
+    flex-shrink: 0;
+    flex-grow: 1;
+    max-width: 570rem;
+}
+
+.name {
+    font-weight: 800;
+    font-size: 26rem;
+    padding-bottom: 25rem;
+}
+
+.columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 40rem;
+}
+
+.field .label {
+    font-weight: 600;
+}
+
+.borders {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 10rem;
+    padding-top: 50rem;
+}
+
+.borders .value {
+    padding: 5rem 20rem;
+    background: var(--element-color);
+    border-radius: 4rem;
+    box-shadow: 0rem 0rem 5rem rgba(0, 0, 0, 0.1);
+}
+
+
+@media screen and (max-width: 1000px) {
+    .content {
+        flex-direction: column;
+    }
+}
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 40rem 25rem;
+    }
+
+    .info {
+        align-self: flex-start;
+    }
+
+    .columns {
+        flex-direction: column;
+    }
+}
+
+
+@keyframes hide {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes show {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
 
 </style>

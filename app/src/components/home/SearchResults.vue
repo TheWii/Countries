@@ -7,6 +7,7 @@
         >
             <ResultItem
               :data="result"
+              @open="$emit('open-result', result)"
             ></ResultItem>
         </li>
     </ul>

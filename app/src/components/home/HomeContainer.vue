@@ -1,11 +1,14 @@
 <template>
-<div class="search-container">
+<div class="home container"
+  :class="{ active }"
+>
     <SearchHeader
       @search="search"
       @filter-region="setFilterRegion"
     ></SearchHeader>
     <SearchResults
       :results="results"
+      @open-result="openResult"
     ></SearchResults>
 </div>
 </template>
@@ -15,7 +18,7 @@
 import SearchHeader from './SearchHeader.vue';
 import SearchResults from './SearchResults.vue';
 
-import { getAll, getByName } from '../../services/CountryService.js';
+import { getAll, getByName, getByCode } from '../../services/CountryService.js';
 
 export default {
     name: 'HomeContainer',
@@ -23,7 +26,9 @@ export default {
         SearchHeader,
         SearchResults
     },
+    props: [ 'activeContainer' ],
     data() { return {
+        id: 'home',
         lastQuery: '',
         results: [],
         filterProps: {}
@@ -42,7 +47,7 @@ export default {
             console.log(`Home -> Searching for '${input}'`);
             const properties = [
                 'flags', 'name', 'population',
-                'region', 'capital'
+                'region', 'capital', 'cca3'
             ];
             this.results = await this.query(input, properties);
             console.log(`Home -> Search completed.`);
@@ -79,6 +84,17 @@ export default {
             if (region) this.setFilterProperty('region', region);
             else this.removeFilterProperty('region');
             this.search(this.lastQuery);
+        },
+
+        async openResult(result) {
+            console.log(`Home -> Fetching country: ${result.cca3}`);
+            const country = await getByCode(result.cca3);
+            if (!country) {
+                console.log(`Fetch failed.`);
+                return;
+            }
+            console.log(`Fetch completed.`);
+            this.$emit('open-result', country);
         }
     }
 }
@@ -86,5 +102,34 @@ export default {
 
 
 <style scoped>
+
+.container {
+    display: none;
+    /*animation-name: hide;
+    animation-duration: 1s;*/
+}
+.container.active {
+    display: block;
+    /*animation-name: show;*/
+}
+
+@keyframes hide {
+    from {
+        position: initial;
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes show {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
 
 </style>

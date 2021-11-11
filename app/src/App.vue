@@ -5,8 +5,17 @@
     @set-theme="setTheme"
   ></Header>
   <main>
-      <HomeContainer></HomeContainer>
-      <DetailContainer></DetailContainer>
+      <HomeContainer
+        ref="home"
+        :activeContainer="activeContainer"
+        @open-result="openResult"
+      ></HomeContainer>
+      <DetailContainer
+        ref="details"
+        :activeContainer="activeContainer"
+        :data="targetCountry"
+        @open-container="openContainer"
+      ></DetailContainer>
   </main>
 </div>
 </template>
@@ -25,13 +34,30 @@ export default {
     DetailContainer
   },
   data() { return {
-    theme: 'light'
+    theme: 'light',
+    activeContainer: 'home',
+    targetCountry: null
   }},
   methods: {
     setTheme(name) {
       document.documentElement.className = name;
       this.theme = name;
     },
+
+    openContainer(containerId) {
+      console.log(`App -> Opening container: ${containerId}`)
+      this.activeContainer = containerId;
+    },
+
+    setTarget(result) {
+      console.log('App -> Setting target.');
+      this.targetCountry = result;
+    },
+
+    openResult(country) {
+      this.setTarget(country);
+      this.openContainer('details');
+    }
   }
 }
 </script>
@@ -70,6 +96,11 @@ body {
 }
 
 main {
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+}
+main > .container {
   padding: 40rem 60rem;
 }
 

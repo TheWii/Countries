@@ -1,5 +1,7 @@
 <template>
-<div class="result">
+<div class="result"
+  @click="clicked"
+>
     <img class="flag" :src="getFlag" alt="Country flag">
     <div class="bottom">
         <h2 class="name">{{ getName }}</h2>
@@ -53,6 +55,9 @@ export default {
         }
     },
     methods: {
+        clicked() {
+            this.$emit('open');
+        }
     }
 }
 </script>

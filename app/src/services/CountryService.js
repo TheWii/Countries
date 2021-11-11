@@ -19,3 +19,14 @@ export async function getByName(name, ...fields) {
     }
     catch (err) { return [] }
 }
+
+export async function getByCode(code, ...fields) {
+    const url = `${root}alpha/${code}?fields=${fields.join(',')}`;
+    try {
+        const response = await fetch(url);
+        if (response.status === 404) return null;
+        const json = await response.json();
+        return json[0];
+    }
+    catch (err) { return null }
+}
