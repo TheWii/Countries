@@ -3,11 +3,12 @@
   :class="{ active }"
 >
     <SearchHeader
+      :searching="searching"
       @search="search"
       @filter-region="setFilterRegion"
     ></SearchHeader>
     <SearchResults
-      :results="results"
+      :results="results.current"
       @open-result="openResult"
     ></SearchResults>
 </div>
@@ -30,7 +31,12 @@ export default {
     data() { return {
         id: 'home',
         lastQuery: '',
-        results: [],
+        searching: false,
+        results: {
+            all: [],
+            queried: {},
+            current: []
+        },
         filterProps: {}
     }},
     computed: {
@@ -38,28 +44,48 @@ export default {
             return this.id === this.activeContainer;
         }
     },
-    created() {
+    async created() {
         console.log('Home -> Created.');
+        await this.cacheAll();
         this.search();
     },
     methods: {
-        async search(input='') {
-            console.log(`Home -> Searching for '${input}'`);
+        async cacheAll() {
+            console.log(`Home -> Caching all countries.`);
             const properties = [
                 'flags', 'name', 'population',
                 'region', 'capital', 'cca3'
             ];
-            this.results = await this.query(input, properties);
+            const all = await getAll(properties);
+            this.results.all = all.reduce((acc, country) => {
+                acc[country.cca3] = country;
+                return acc;
+            }, {});
+            this.results.queried[''] = all.map(val => val.cca3);
+        },
+
+        async search(input='') {
+            console.log(`Home -> Searching for '${input}'`);
+            const properties = [ 'cca3' ];
+            const ids = await this.query(input, properties);
+            const results = ids.map(id => this.results.all[id]);
+            this.results.current = this.getFiltered(results);
             console.log(`Home -> Search completed.`);
         },
 
         async query(input=null, properties=[]) {
+            const queries = this.results.queried;
             if (input === null) input = this.lastQuery;
             this.lastQuery = input;
-            const results = input.length ?
-                await getByName(input, properties) :
-                await getAll(properties);
-            return this.getFiltered(results);
+            if (!input.length) return queries[''];
+            if (!queries[input]) {
+                console.log(`Home -> Fetching the API for '${input}'.`);
+                this.searching = true;
+                const results = await getByName(input, properties);
+                queries[input] = results.map(val => val.cca3);
+            }
+            this.searching = false;
+            return queries[input];
         },
 
         getFiltered(results) {

@@ -34,14 +34,19 @@ export default {
     DetailContainer
   },
   data() { return {
-    theme: 'light',
+    theme: localStorage.getItem('theme') || 'light',
     activeContainer: 'home',
     targetCountry: null
-  }},
+  }
+  },
+  created() {
+    this.setTheme(this.theme);
+  },
   methods: {
     setTheme(name) {
       document.documentElement.className = name;
       this.theme = name;
+      localStorage.setItem('theme', name);
     },
 
     openContainer(containerId) {

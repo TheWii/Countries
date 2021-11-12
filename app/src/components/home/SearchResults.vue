@@ -39,6 +39,7 @@ export default {
 
 .results {
     padding-top: 40rem;
+    min-height: 400rem;
 }
 .results > ul {
     display: grid;

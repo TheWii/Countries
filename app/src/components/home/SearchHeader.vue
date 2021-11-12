@@ -2,6 +2,7 @@
 <div class="page-header">
     <TextInput
       :placeholder="'Search for a country...'"
+      :searching="searching"
       @search="search"
     ></TextInput>
     <Dropdown
@@ -24,7 +25,7 @@ export default {
         Dropdown,
         TextInput
     },
-    props: [ ],
+    props: [ 'searching' ],
     data() { return {
         filteredRegion: null,
         continents: [
@@ -32,6 +33,11 @@ export default {
             'Europe', 'Oceania'
         ]
     }},
+    watch: {
+        searching() {
+            console.log(`SearchHeader -> Searching: ${this.searching}`);
+        }
+    },
     methods: {
         filterRegion(region) {
             this.filteredRegion = region;
@@ -51,6 +57,7 @@ export default {
     font-size: 14rem;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 10rem;
 }
 
