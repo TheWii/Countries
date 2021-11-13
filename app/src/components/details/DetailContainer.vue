@@ -241,9 +241,6 @@ button.back > img {
     }
 }
 @media screen and (max-width: 600px) {
-    .container {
-        padding: 40rem 25rem;
-    }
 
     .info {
         align-self: flex-start;

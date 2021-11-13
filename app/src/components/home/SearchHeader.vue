@@ -65,4 +65,16 @@ export default {
     flex-shrink: 0;
 }
 
+@media screen and (max-width: 550px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40rem;
+    }
+
+    .search-bar {
+        max-width: 100%;
+    }
+}
+
 </style>

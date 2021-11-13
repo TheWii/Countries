@@ -114,5 +114,9 @@ export default {
     width: 100%;
     padding: 0 25rem;
 }
+.content button:hover,
+.content button:focus {
+    background: var(--element-hover-color);
+}
 
 </style>

@@ -54,4 +54,19 @@ button > img {
     width: 1em;
     filter: invert(var(--invert-percent));
 }
+
+@media screen and (max-width: 600px) {
+    header {
+        padding-right: 25rem;
+        padding-left: 25rem;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    header {
+        padding-right: 10rem;
+        padding-left: 10rem;
+    }
+}
+
 </style>

@@ -78,12 +78,14 @@ export default {
   --background-color: hsl(0, 0%, 98%); /* Light Mode Background */
   --input-color: hsl(0, 0%, 52%); /* Light Mode Input */
   --element-color: hsl(0, 0%, 100%); /* Light Mode Elements */
+  --element-hover-color: hsl(0, 0%, 95%); /* Light Mode Elements */
 }
 :root.dark {
   --invert-percent: 100%;
   --text-color: hsl(0, 0%, 100%); /* Dark Mode Text */
   --background-color: hsl(207, 26%, 17%);  /* Dark Mode Background */
   --element-color: hsl(209, 23%, 22%); /* Dark Mode Elements */
+  --element-hover-color: hsl(209, 23%, 28%); /* Dark Mode Elements */
 }
 
 
@@ -107,6 +109,12 @@ main {
 }
 main > .container {
   padding: 40rem 60rem;
+}
+
+@media screen and (max-width: 600px) {
+  main > .container {
+      padding: 40rem 25rem;
+  }
 }
 
 </style>

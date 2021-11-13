@@ -43,6 +43,7 @@ export default {
 }
 .results > ul {
     display: grid;
+    width: 100%;
     grid-template-columns: repeat(auto-fill, 225rem);
     justify-content: space-between;
     gap: 30rem;
@@ -51,6 +52,12 @@ export default {
 
 .message {
     font-weight: 600;
+}
+
+@media screen and (max-width: 600px) {
+    .results > ul {
+        justify-content: center;
+    }
 }
 
 </style>
