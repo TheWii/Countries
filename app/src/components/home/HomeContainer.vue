@@ -135,30 +135,20 @@ export default {
 
 .container {
     display: none;
-    /*animation-name: hide;
-    animation-duration: 1s;*/
 }
 .container.active {
     display: block;
-    /*animation-name: show;*/
-}
-
-@keyframes hide {
-    from {
-        position: initial;
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-100%);
-    }
+    animation: show 0.3s ease-out;
 }
 
 @keyframes show {
     from {
-        transform: translateX(-100%);
+        opacity: 0;
+        transform: scale(0.75);
     }
     to {
-        transform: translateX(0);
+        opacity: 1;
+        transform: scale(1.0);
     }
 }
 

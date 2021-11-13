@@ -93,6 +93,7 @@ html {
 }
 
 body {
+  position: relative;
   font-size: 16rem;
   font-weight: 300;
   color: var(--text-color);
@@ -101,7 +102,6 @@ body {
 }
 
 main {
-  position: relative;
   overflow-x: hidden;
   width: 100%;
 }

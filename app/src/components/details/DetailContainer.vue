@@ -164,12 +164,21 @@ button.back > img {
 
 .container {
     display: none;
-    /*animation-name: hide;
-    animation-duration: 1s;*/
 }
 .container.active {
     display: block;
-    /*animation-name: show;*/
+    animation: show 0.3s ease-out;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+        transform: scale(0.75);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.0);
+    }
 }
 
 .content {
@@ -244,25 +253,5 @@ button.back > img {
         flex-direction: column;
     }
 }
-
-
-@keyframes hide {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes show {
-    from {
-        transform: translateX(100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
 
 </style>
