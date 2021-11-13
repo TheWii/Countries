@@ -13,7 +13,7 @@
       <DetailContainer
         ref="details"
         :activeContainer="activeContainer"
-        :data="targetCountry"
+        :ctx="resultContext"
         @open-container="openContainer"
       ></DetailContainer>
   </main>
@@ -36,7 +36,7 @@ export default {
   data() { return {
     theme: localStorage.getItem('theme') || 'light',
     activeContainer: 'home',
-    targetCountry: null
+    resultContext: null
   }
   },
   created() {
@@ -54,13 +54,13 @@ export default {
       this.activeContainer = containerId;
     },
 
-    setTarget(result) {
+    setContext(result) {
       console.log('App -> Setting target.');
-      this.targetCountry = result;
+      this.resultContext = result;
     },
 
-    openResult(country) {
-      this.setTarget(country);
+    openResult(context) {
+      this.setContext(context);
       this.openContainer('details');
     }
   }

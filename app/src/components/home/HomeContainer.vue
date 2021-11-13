@@ -119,8 +119,12 @@ export default {
                 console.log(`Fetch failed.`);
                 return;
             }
+            const ctx = {
+                allCountries: this.results.all,
+                targetCountry: country
+            }
             console.log(`Fetch completed.`);
-            this.$emit('open-result', country);
+            this.$emit('open-result', ctx);
         }
     }
 }
