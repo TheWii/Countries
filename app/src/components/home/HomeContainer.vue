@@ -27,7 +27,7 @@ export default {
         SearchHeader,
         SearchResults
     },
-    props: [ 'activeContainer' ],
+    props: [ 'activeContainer', 'ctx' ],
     data() { return {
         id: 'home',
         lastQuery: '',
@@ -37,17 +37,30 @@ export default {
             queried: {},
             current: []
         },
-        filterProps: {}
+        filterProps: {},
+        openUpdate: false
     }},
     computed: {
         active() {
             return this.id === this.activeContainer;
         }
     },
+    watch: {
+        activeContainer(containerId) {
+            this.openUpdate = this.id === containerId;
+        }
+    },
     async created() {
         console.log('Home -> Created.');
         await this.cacheAll();
         this.search();
+    },
+    updated() {
+        this.$nextTick(function() {
+            if (!this.openUpdate) return;
+            this.openUpdate = false;
+            document.documentElement.scrollTop = this.ctx.scroll[this.id];
+        });
     },
     methods: {
         async cacheAll() {

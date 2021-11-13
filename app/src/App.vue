@@ -8,12 +8,13 @@
       <HomeContainer
         ref="home"
         :activeContainer="activeContainer"
+        :ctx="context"
         @open-result="openResult"
       ></HomeContainer>
       <DetailContainer
         ref="details"
         :activeContainer="activeContainer"
-        :ctx="resultContext"
+        :ctx="context"
         @open-container="openContainer"
       ></DetailContainer>
   </main>
@@ -36,9 +37,11 @@ export default {
   data() { return {
     theme: localStorage.getItem('theme') || 'light',
     activeContainer: 'home',
-    resultContext: null
-  }
-  },
+    context: {
+      result: {},
+      scroll: {},
+    }
+  }},
   created() {
     this.setTheme(this.theme);
   },
@@ -50,17 +53,19 @@ export default {
     },
 
     openContainer(containerId) {
-      console.log(`App -> Opening container: ${containerId}`)
+      console.log(`App -> Opening container: ${containerId}`);
+      const el = document.documentElement;
+      this.context.scroll[this.activeContainer] = el.scrollTop;
       this.activeContainer = containerId;
     },
 
-    setContext(result) {
+    setResultContext(result) {
       console.log('App -> Setting target.');
-      this.resultContext = result;
+      this.context.result = result;
     },
 
     openResult(context) {
-      this.setContext(context);
+      this.setResultContext(context);
       this.openContainer('details');
     }
   }
@@ -106,6 +111,8 @@ body {
 main {
   overflow-x: hidden;
   width: 100%;
+  max-width: 1440rem;
+  margin: auto;
 }
 main > .container {
   padding: 40rem 60rem;

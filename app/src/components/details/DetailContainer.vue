@@ -85,11 +85,15 @@ export default {
     name: 'DetailContainer',
     props: [ 'activeContainer', 'ctx' ],
     data() { return {
-        id: 'details'
+        id: 'details',
+        openUpdate: false
     }},
     watch: {
         context() {
             console.log(`DetailContainer -> Changed data.`);
+        },
+        activeContainer(containerId) {
+            this.openUpdate = this.id === containerId;
         }
     },
     computed: {
@@ -97,47 +101,54 @@ export default {
             return this.id === this.activeContainer;
         },
         getFlag() {
-            return this.ctx.targetCountry.flags.svg;
+            return this.ctx.result.targetCountry.flags.svg;
         },
         getName() {
-            return this.ctx.targetCountry.name.common;
+            return this.ctx.result.targetCountry.name.common;
         },
         getNativeName() {
-            for (let entry of Object.entries(this.ctx.targetCountry.name.nativeName)) {
+            for (let entry of Object.entries(this.ctx.result.targetCountry.name.nativeName)) {
                 return entry[1].common;
             }
             return '';
         },
         getPopulation() {
-            return this.ctx.targetCountry.population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return this.ctx.result.targetCountry.population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
         getRegion() {
-            return this.ctx.targetCountry.region;
+            return this.ctx.result.targetCountry.region;
         },
         getSubRegion() {
-            return this.ctx.targetCountry.subregion;
+            return this.ctx.result.targetCountry.subregion;
         },
         getCapital() {
-            return this.ctx.targetCountry.capital ? this.ctx.targetCountry.capital[0] : '';
+            return this.ctx.result.targetCountry.capital ? this.ctx.result.targetCountry.capital[0] : '';
         },
         getTopLevelDomain() {
-            return this.ctx.targetCountry.tld ? this.ctx.targetCountry.tld[0] : '';
+            return this.ctx.result.targetCountry.tld ? this.ctx.result.targetCountry.tld[0] : '';
         },
         getCurrencies() {
-            if (!this.ctx.targetCountry.currencies) return '';
-            return Object.values(this.ctx.targetCountry.currencies)
+            if (!this.ctx.result.targetCountry.currencies) return '';
+            return Object.values(this.ctx.result.targetCountry.currencies)
                 .map(val => val.name).join(', ');
         },
         getLanguages() {
-            if (!this.ctx.targetCountry.languages) return '';
-            return Object.values(this.ctx.targetCountry.languages).join(', ');
+            if (!this.ctx.result.targetCountry.languages) return '';
+            return Object.values(this.ctx.result.targetCountry.languages).join(', ');
         },
         getBorders() {
-            if (!this.ctx.targetCountry.borders) return;
-            return this.ctx.targetCountry.borders.map(
-                id => this.ctx.allCountries[id].name.common
+            if (!this.ctx.result.targetCountry.borders) return;
+            return this.ctx.result.targetCountry.borders.map(
+                id => this.ctx.result.allCountries[id].name.common
             );
         }
+    },
+    updated() {
+        this.$nextTick(function() {
+            if (!this.openUpdate) return;
+            this.openUpdate = false;
+            document.documentElement.scrollTop = 0;
+        });
     },
     methods: {
     }
