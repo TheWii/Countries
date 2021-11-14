@@ -92,8 +92,42 @@ export default {
 
 
 <style>
-@import url('/styles/reset.css');
 
+* {
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    color: inherit;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+input {
+    background: none;
+    outline: none;
+    border: none;
+}
+input::placeholder {
+    font-size: inherit;
+    color: inherit;
+    opacity: 1;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    display: block;
+}
 :root,
 :root.light {
   --invert-percent: 0%;
