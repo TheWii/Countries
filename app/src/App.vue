@@ -44,6 +44,7 @@ export default {
   }},
   created() {
     this.setTheme(this.theme);
+    window.addEventListener('scroll', () => this.scroll());
   },
   methods: {
     setTheme(name) {
@@ -54,8 +55,7 @@ export default {
 
     openContainer(containerId) {
       console.log(`App -> Opening container: ${containerId}`);
-      const el = document.documentElement;
-      this.context.scroll[this.activeContainer] = el.scrollTop;
+      this.updateScroll();
       this.activeContainer = containerId;
     },
 
@@ -67,6 +67,24 @@ export default {
     openResult(context) {
       this.setResultContext(context);
       this.openContainer('details');
+    },
+
+    updateScroll() {
+      const id = this.activeContainer;
+      if (!id) return;
+      const el = document.documentElement;
+      const scroll = this.context.scroll;
+      scroll[id] = scroll[id] || {};
+      scroll[id].offset = el.scrollTop;
+      scroll[id].height = el.scrollHeight;
+      scroll[id].size = el.clientHeight;
+      scroll[id].progress = el.scrollTop / (el.scrollHeight - el.clientHeight);
+    },
+
+    scroll() {
+      if (!this.activeContainer) return;
+      this.updateScroll();
+      this.$refs[this.activeContainer].scroll();
     }
   }
 }
@@ -80,6 +98,7 @@ export default {
 :root.light {
   --invert-percent: 0%;
   --text-color: hsl(200, 15%, 8%); /* Light Mode Text */
+  --text-contrast-color: hsl(0, 0%, 100%); /* Light Mode Text */
   --background-color: hsl(0, 0%, 98%); /* Light Mode Background */
   --input-color: hsl(0, 0%, 52%); /* Light Mode Input */
   --element-color: hsl(0, 0%, 100%); /* Light Mode Elements */
@@ -88,6 +107,7 @@ export default {
 :root.dark {
   --invert-percent: 100%;
   --text-color: hsl(0, 0%, 100%); /* Dark Mode Text */
+  --text-contrast-color: hsl(200, 15%, 8%); /* Light Mode Text */
   --background-color: hsl(207, 26%, 17%);  /* Dark Mode Background */
   --element-color: hsl(209, 23%, 22%); /* Dark Mode Elements */
   --element-hover-color: hsl(209, 23%, 28%); /* Dark Mode Elements */

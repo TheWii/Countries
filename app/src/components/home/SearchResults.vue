@@ -1,6 +1,6 @@
 <template>
-<div class="results">
-    <ul v-if="results.length">
+<div class="results" v-if="results.length">
+    <ul>
         <li
           v-for="result in results"
           :key="result.cca2"
@@ -11,9 +11,16 @@
             ></ResultItem>
         </li>
     </ul>
-    <div class="message" v-else>
-        No results were found.
+    <div class="load-more" v-if="!complete">
+        <button
+          @click="$emit('load-more')"
+        >
+            Load More
+        </button>
     </div>
+</div>
+<div class="message" v-else>
+    No results were found.
 </div>
 </template>
 
@@ -26,7 +33,7 @@ export default {
     components: {
         ResultItem
     },
-    props: [ 'results' ],
+    props: [ 'results', 'complete' ],
     data() { return {
     }},
     methods: {
@@ -49,6 +56,26 @@ export default {
     gap: 30rem;
     row-gap: 50rem;
 }
+
+.load-more {
+    padding-top: 40rem;
+    display: flex;
+    justify-content: center;
+}
+
+.load-more button {
+    font-weight: 600;
+    padding: 0.75em 1.5em;
+    border-radius: 4rem;
+    border: 2rem solid var(--text-color);
+}
+.load-more button:hover,
+.load-more button:active {
+    color: var(--text-contrast-color);
+    background: var(--text-color);
+}
+
+
 
 .message {
     font-weight: 600;

@@ -151,6 +151,7 @@ export default {
         });
     },
     methods: {
+        scroll() {}
     }
 }
 </script>

@@ -8,8 +8,10 @@
       @filter-region="setFilterRegion"
     ></SearchHeader>
     <SearchResults
-      :results="results.current"
+      :results="results.rendered"
+      :complete="completeRender"
       @open-result="openResult"
+      @load-more="loadMore"
     ></SearchResults>
 </div>
 </template>
@@ -32,10 +34,15 @@ export default {
         id: 'home',
         lastQuery: '',
         searching: false,
+        renderAmount: 10,
+        renderIndex: 0,
+        completeRender: false,
+        loading: false,
         results: {
             all: [],
             queried: {},
-            current: []
+            current: [],
+            rendered: []
         },
         filterProps: {},
         openUpdate: false
@@ -48,6 +55,9 @@ export default {
     watch: {
         activeContainer(containerId) {
             this.openUpdate = this.id === containerId;
+        },
+        renderIndex() {
+            this.updateRendered();
         }
     },
     async created() {
@@ -56,10 +66,12 @@ export default {
         this.search();
     },
     updated() {
+        this.loading = false;
+        console.log('Loaded!');
         this.$nextTick(function() {
             if (!this.openUpdate) return;
             this.openUpdate = false;
-            document.documentElement.scrollTop = this.ctx.scroll[this.id];
+            document.documentElement.scrollTop = this.ctx.scroll[this.id].offset;
         });
     },
     methods: {
@@ -83,6 +95,8 @@ export default {
             const ids = await this.query(input, properties);
             const results = ids.map(id => this.results.all[id]);
             this.results.current = this.getFiltered(results);
+            this.renderIndex = this.renderAmount;
+            this.updateRendered();
             console.log(`Home -> Search completed.`);
         },
 
@@ -138,6 +152,25 @@ export default {
             }
             console.log(`Fetch completed.`);
             this.$emit('open-result', ctx);
+        },
+
+        updateRendered() {
+            this.results.rendered = this.results.current.slice(0, this.renderIndex);
+            this.completeRender = this.results.rendered.length === this.results.current.length;
+            console.log(`Rendering ${this.results.rendered.length} results, complete=${this.completeRender}`);
+        },
+
+        loadMore() {
+            if(this.completeRender) return;
+            console.log('Loading more!');
+            this.renderIndex += this.renderAmount;
+            this.loading = true;
+        },
+
+        scroll() {
+            if (this.loading || this.completeRender) return;
+            const scroll = this.ctx.scroll[this.id];
+            if (scroll.progress >= 0.9) this.loadMore();
         }
     }
 }
