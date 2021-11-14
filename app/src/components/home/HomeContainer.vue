@@ -157,11 +157,10 @@ export default {
 @keyframes show {
     from {
         opacity: 0;
-        transform: scale(0.75);
+        transform: translateY(50rem);
     }
     to {
         opacity: 1;
-        transform: scale(1.0);
     }
 }
 

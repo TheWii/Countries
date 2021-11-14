@@ -2,7 +2,9 @@
 <div class="dropdown"
   :class = "{ active }"
 >
-    <button @click="clicked">
+    <button @click="clicked"
+      :aria-label="`${text}. Selected: ${selected || 'None'}`"
+    >
         <span>{{ getText }}</span>
         <img class="expand-icon" src="../assets/expand-arrow.svg" alt="Expand icon">
     </button>

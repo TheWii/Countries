@@ -109,7 +109,7 @@ body {
 }
 
 main {
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   max-width: 1440rem;
   margin: auto;

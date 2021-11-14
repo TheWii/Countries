@@ -1,8 +1,9 @@
 <template>
 <div class="result"
+  :aria-label="getName"
   @click="clicked"
 >
-    <img class="flag" :src="getFlag" alt="Country flag">
+    <img class="flag" :src="getFlag" :alt="`${getName}'s flag`">
     <div class="bottom">
         <h2 class="name">{{ getName }}</h2>
         <div class="info">

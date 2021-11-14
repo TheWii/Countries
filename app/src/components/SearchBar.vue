@@ -3,6 +3,7 @@
   @submit="search"
 >
     <button type="submit"
+      title="Search"
       :class="{ searching }"
     >
         <img class="search-icon" src="../assets/search.svg" alt="Search icon">
@@ -56,7 +57,7 @@ export default {
 
 .search-bar {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: 16rem;
     width: 100%;
     max-width: 400rem;
@@ -84,7 +85,7 @@ button.searching {
         border-color: rgba(0, 0, 0, 0);
     }
     50% {
-        border-color: var(--text-color);
+        border-color: var(--input-color);
     }
     100% {
         border-color: rgba(0, 0, 0, 0);
@@ -103,6 +104,9 @@ html.dark button > img {
     opacity: 1;
 }
 
+input {
+    flex-grow: 1;
+}
 input::placeholder {
     opacity: 0.75;
 }
