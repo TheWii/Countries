@@ -78,6 +78,7 @@ export default {
     width: 225rem;
     height: 135rem;
     object-fit: cover;
+    background: var(--image-placeholder-color);
 }
 
 .bottom {

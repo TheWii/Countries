@@ -103,6 +103,7 @@ export default {
   --input-color: hsl(0, 0%, 52%); /* Light Mode Input */
   --element-color: hsl(0, 0%, 100%); /* Light Mode Elements */
   --element-hover-color: hsl(0, 0%, 95%); /* Light Mode Elements */
+  --image-placeholder-color: hsl(0, 0%, 100%); /* Light Mode Elements */
 }
 :root.dark {
   --invert-percent: 100%;
@@ -111,6 +112,7 @@ export default {
   --background-color: hsl(207, 26%, 17%);  /* Dark Mode Background */
   --element-color: hsl(209, 23%, 22%); /* Dark Mode Elements */
   --element-hover-color: hsl(209, 23%, 28%); /* Dark Mode Elements */
+  --image-placeholder-color: hsl(209, 23%, 28%); /* Dark Mode Elements */
 }
 
 
