@@ -19,8 +19,10 @@
         </button>
     </div>
 </div>
-<div class="message" v-else>
-    No results were found.
+<div class="results" v-else>
+    <span class="message">
+        No results were found.
+    </span>
 </div>
 </template>
 
